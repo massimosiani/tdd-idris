@@ -14,3 +14,7 @@ total transposeMat : Vect m (Vect n elem) -> Vect n (Vect m elem)
 transposeMat [] = createEmpties
 transposeMat (x :: xs) = let xsTrans = transposeMat xs in
                          transposeHelper2 x xsTrans
+
+total addMatrix : Num a => Vect n (Vect m a) -> Vect n (Vect m a) -> Vect n (Vect m a)
+addMatrix [] [] = []
+addMatrix (x :: xs) (y :: ys) = (zipWith (+) x y) :: addMatrix xs ys

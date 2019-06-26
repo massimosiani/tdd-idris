@@ -18,3 +18,15 @@ transposeMat (x :: xs) = let xsTrans = transposeMat xs in
 total addMatrix : Num a => Vect n (Vect m a) -> Vect n (Vect m a) -> Vect n (Vect m a)
 addMatrix [] [] = []
 addMatrix (x :: xs) (y :: ys) = (zipWith (+) x y) :: addMatrix xs ys
+
+innerProd : Num a => Vect m a -> Vect m a -> a
+innerProd xs ys = sum (zipWith (*) xs ys)
+
+multMatrix_rhs_2 : Num a => Vect m a -> Vect len (Vect m a) -> Vect p (Vect m a) -> Vect (S len) (Vect p a)
+multMatrix_rhs_2 x xs [] = createEmpties
+multMatrix_rhs_2 x xs (y :: ys) = (innerProd x y :: ?multMatrix_rhs_2_rhs_4) :: ?multMatrix_rhs_2_rhs_5
+
+multMatrix : Num a => Vect n (Vect m a) -> Vect m (Vect p a) -> Vect n (Vect p a)
+multMatrix [] ys = []
+multMatrix (x :: xs) ys = let ysTrans = transposeMat ys in
+                          multMatrix_rhs_2 x xs ysTrans

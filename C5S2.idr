@@ -26,3 +26,19 @@ main : IO ()
 main = do
     t <- time
     guess (cast t) 0
+
+myRepl : (prompt : String) -> (onInput : String -> String) -> IO ()
+myRepl prompt onInput = do
+    putStr prompt
+    x <- getLine
+    putStr (onInput x)
+    myRepl prompt onInput
+
+myReplWith : (state : a) -> (prompt : String) -> (onInput : a -> String -> Maybe (String, a)) -> IO ()
+myReplWith state prompt onInput = do
+    putStr prompt
+    x <- getLine
+    case onInput state x of
+        Nothing => pure ()
+        Just (output, newState) => do putStr output
+                                      myReplWith newState prompt onInput
